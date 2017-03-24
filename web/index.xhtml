@@ -6,16 +6,16 @@
     xmlns:p="http://primefaces.org/ui"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <title>Facelet Title</title>
+        <title>ANH</title>
     </h:head>
     <h:body>
         <center>
-            <h:form enctype="multipart/form-data">
+            <h:form id="main" enctype="multipart/form-data">
                 <p:messages autoUpdate="true"/>
                 <p:panelGrid>
                     <p:row>
                         <p:column>
-                            <p:outputLabel value="Ingresa tu archivo (.csv) y los datos correspondientes"/>
+                            <p:outputLabel value="Uplodad your .csv file and fill the molecules and ETA fields"/>
                         </p:column>
                         <p:column>
 
@@ -23,8 +23,8 @@
                     </p:row>
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="Moleculas" value="Moleculas: "/>
-                            <p:spinner id="Moleculas" value="#{fileController.moleculas}" min="2" max="1000" required="true"/>    
+                            <p:outputLabel for="Molecules" value="Molecules: "/>
+                            <p:spinner id="Molecules" value="#{fileController.moleculas}" min="2" max="1000" required="true"/>    
                         </p:column>
                         <p:column>
                             <p:outputLabel value="ETA: "/>
@@ -34,14 +34,15 @@
                     <p:row>
                         <p:column>
                             <h:inputFile id="file" value="#{fileController.file}"/>
-                            <p:commandButton ajax="false" value="Procesar datos"
-                                             action="#{fileController.algo()}"/>
+                            <p:commandButton  ajax="false" value="Process data"
+                                             actionListener="#{fileController.algo()}" update="@form"/>
                         </p:column>
                         <p:column>
-                            
+                            <p:commandButton ajax="false" value="View result graph" actionListener="#{fileController.reload()}"/>
                         </p:column>
                     </p:row>
                 </p:panelGrid>
+                <p:chart rendered="#{fileController.activo}" type="line" id="graf" model="#{fileController.lineModel1}" style="height:600px; width: 900px;"/>
             </h:form>
         </center>
     </h:body>
