@@ -53,7 +53,7 @@ import org.primefaces.model.chart.LineChartSeries;
 @ManagedBean
 public class FileController implements Serializable{
 
-
+    //private Locale locale = Locale.ENGLISH;
     private Part file;
     private final int limit_max_size=102400000;
     private final String limit_type_file = "csv";
@@ -67,6 +67,7 @@ public class FileController implements Serializable{
     
     @PostConstruct
     public void init() {
+        //FacesContext.getCurrentInstance().getViewRoot().setLocale(locale);
         if(!isActivo()){
             this.estimates = new ArrayList<Float>();
             this.targets  = new ArrayList<Float>();
