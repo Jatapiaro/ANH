@@ -96,7 +96,6 @@ public class FileController implements Serializable{
     
     private LineChartModel initLinearModel() {
         LineChartModel model = new LineChartModel();
-
         ChartSeries series1 = new ChartSeries();
         series1.setLabel("Targets");
         ChartSeries series2 = new ChartSeries();
@@ -107,25 +106,6 @@ public class FileController implements Serializable{
             series2.set(i+1, this.estimates.get(i));
         }
         
-        model.addSeries(series1);
-        model.addSeries(series2);
-
-        return model;
-    }
-    
-    private void createLineModels2() {
-        lineModel1.clear();
-        lineModel1 = new LineChartModel();
-    }
-
-    private LineChartModel initLinearModel2() {
-        LineChartModel model = new LineChartModel();
-
-        ChartSeries series1 = new ChartSeries();
-        series1.setLabel("Targets");
-        ChartSeries series2 = new ChartSeries();
-        series2.setLabel("Estimates");
-
         model.addSeries(series1);
         model.addSeries(series2);
 
@@ -238,7 +218,7 @@ public class FileController implements Serializable{
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
                     return;
                 }
-                Faces.sendFile(filer, true);
+                Faces.sendFile(filer, false);
                 this.deleteFile(path);
             }else{
                 FacesContext context = FacesContext.getCurrentInstance();
