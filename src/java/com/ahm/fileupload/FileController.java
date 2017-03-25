@@ -62,6 +62,7 @@ public class FileController implements Serializable{
     private double eta = 0.0;
     private List<Float> targets,estimates;
     private boolean activo = false;
+    private boolean which = false;
     private LineChartModel lineModel1;
     private float targetsMin,targetsMax,estimastesMin,estimatesMax;
     
@@ -112,6 +113,25 @@ public class FileController implements Serializable{
         return model;
     }
     
+    private void createLineModels2() {
+        lineModel1.clear();
+        lineModel1 = new LineChartModel();
+    }
+
+    private LineChartModel initLinearModel2() {
+        LineChartModel model = new LineChartModel();
+
+        ChartSeries series1 = new ChartSeries();
+        series1.setLabel("Targets");
+        ChartSeries series2 = new ChartSeries();
+        series2.setLabel("Estimates");
+
+        model.addSeries(series1);
+        model.addSeries(series2);
+
+        return model;
+    }
+    
     public void readLastInputColumn(File csvFile){
         String line = "";
         String cvsSplitBy = ",";
@@ -121,7 +141,7 @@ public class FileController implements Serializable{
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(cvsSplitBy);
                 //System.out.println(data[2]);
-                float val = Float.parseFloat(data[2]);
+                float val = Float.parseFloat(data[data.length-1]);
                 if(val<this.targetsMin){
                     this.targetsMin = val;
                 }
@@ -151,6 +171,12 @@ public class FileController implements Serializable{
         try {
             br = new BufferedReader(new FileReader(csvFile));
             while ((line = br.readLine()) != null) {
+                if(line.split(",").length > 1){
+                    this.targets.clear();
+                    this.estimates.clear();
+                    this.which = true;
+                    return;
+                }
                 float val = Float.parseFloat(line);
                 if(val<this.estimastesMin){
                     this.estimastesMin = val;

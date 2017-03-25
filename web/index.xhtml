@@ -27,8 +27,8 @@
                             <p:spinner id="Molecules" value="#{fileController.moleculas}" min="2" max="1000" required="true"/>    
                         </p:column>
                         <p:column>
-                            <p:outputLabel value="ETA: "/>
-                            <p:spinner id="ETA" value="#{fileController.eta}"  min="0" max="1" stepFactor="0.1" required="truw"/>  
+                            <p:outputLabel for="ETA" value="Learning rate: "/>
+                            <p:spinner id="ETA" value="#{fileController.eta}"  min="0" max="1" stepFactor="0.1" required="true" label="Learning rate"/>  
                         </p:column>
                     </p:row>
                     <p:row>
