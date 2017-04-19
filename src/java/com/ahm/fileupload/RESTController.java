@@ -3,16 +3,20 @@ package com.ahm.fileupload;
 import ahn.AHN;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.text.NumberFormat;
 import java.util.Calendar;
 import javax.ws.rs.*;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.*;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 @Path("/file")
 public class RESTController {
@@ -24,9 +28,40 @@ public class RESTController {
     private final String limit_type_file = "csv";
     private final String path_to = "resources/files";
     
-    @POST
+    
+    @Path("/results")
+    @Produces("text/csv")
+    @GET
+    public Response getFile(@QueryParam("code") String code) {
+
+        String direction = context.getRealPath(path_to)+"/"+code+".csv";
+        File file = new File(direction);
+
+        ResponseBuilder response = Response.ok((Object) file);
+        response.header("Content-Disposition",
+                "attachment; filename="+code+".csv");
+        return response.build();
+    }
+    
+    @Path("/delete")
+    @GET
+    public Response deleteFile(@QueryParam("code") String code) {
+        String direction = context.getRealPath(path_to) + "/" + code + ".csv";
+        File file = new File(direction);
+        this.deleteFileMethod(direction);
+        return Response.status(200).entity("OK\n").build(); 
+    }
+    
+    private void deleteFileMethod(String fileName) {
+        File fileToCreate = new File(fileName);
+        fileToCreate.delete();
+    }
+    
+    
+    
     @Path("/upload")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @POST
     public Response uploadFile(
             @FormDataParam("file") InputStream uploadedInputStream,
             @FormDataParam("file") FormDataContentDisposition fileDetail,
@@ -38,12 +73,12 @@ public class RESTController {
             if (this.checkFileType(fileDetail.getFileName())) {
                 String[] data = this.writeToFile(uploadedInputStream, fileDetail.getFileName());
                 AHN.useAHN(data[0], data[0], molecules, eta);
-                output = "Your download code is: " + data[1].split("\\.")[0];
+                output = "Your download code is: " + data[1].split("\\.")[0]+"\n";
             } else {
-                output = "Invalid file type";
+                output = "Invalid file type\n";
             }
         }else{
-            output = "Please send a csv file";
+            output = "Please send a csv file\n";
         }
         return Response.status(200).entity(output).build(); 
     }
