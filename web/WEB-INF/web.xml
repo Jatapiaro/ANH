@@ -39,9 +39,10 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
+
     <servlet-mapping>
         <servlet-name>jersey-serlvet</servlet-name>
-        <url-pattern>/rest/*</url-pattern>
+        <url-pattern>/fileupload/*</url-pattern>
     </servlet-mapping>
     
     <session-config>
